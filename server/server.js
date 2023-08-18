@@ -4,20 +4,29 @@ const typeDefs = require('./schemas/typeDefs');
 const resolvers = require('./schemas/resolvers');
 const connectToMongoDB = require('./config/connection'); // Import the MongoDB connection function
 
-const app = express();
+const startServer = async () => {
+  const app = express();
 
-// Connect to MongoDB
-connectToMongoDB();
+  // Connect to MongoDB
+  await connectToMongoDB();
 
-// Create Apollo Server
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+  // Create Apollo Server
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
+  // Start the Apollo Server
+  await server.start();
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  // Apply Apollo Server middleware to the /graphql endpoint
+  server.applyMiddleware({ app, path: '/graphql' });
+
+  // Start the Express app
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+};
+
+startServer();

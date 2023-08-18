@@ -1,23 +1,32 @@
-const Spot = require('../models/Spot');
+const Spot = require('../models/Spot'); // Import your Spot model
 
 const resolvers = {
-    Query: {
-      spot: (parent, args) => {
-        // Logic to fetch a spot by ID
-        const spotId = args.id;
-        // Implement your data fetching logic here and return the result
-        const spot = {}; // Replace with actual data fetching
-        return spot;
-      },
+  Query: {
+    spot: async (parent, args) => {
+      const { id } = args;
+      return Spot.findById(id);
     },
-    Mutation: {
-        addSpot: async (parent, args) => {
-          const { name, description } = args;
-          const newSpot = await Spot.create({ name, description });
-          return newSpot;
-        },
+    spots: async () => {
+      return Spot.find();
     },
+  },
+  Mutation: {
+    createSpot: async (parent, args) => {
+      const { name, description, location } = args.input;
+      const newSpot = new Spot({ name, description, location });
+      await newSpot.save();
+      return newSpot;
+    },
+    updateSpot: async (parent, args) => {
+      const { id, input } = args;
+      return Spot.findByIdAndUpdate(id, input, { new: true });
+    },
+    deleteSpot: async (parent, args) => {
+      const { id } = args;
+      await Spot.findByIdAndDelete(id);
+      return true;
+    },
+  },
 };
 
 module.exports = resolvers;
-  
