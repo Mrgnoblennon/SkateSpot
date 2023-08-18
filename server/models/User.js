@@ -19,12 +19,8 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
-  thoughts: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Thought',
-    },
-  ],
+  spots: [{ type: Schema.Types.ObjectId, ref: 'Spot' }], // Store user's posted spots
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // Store user's comments
 });
 
 userSchema.pre('save', async function (next) {
