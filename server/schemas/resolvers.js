@@ -1,3 +1,5 @@
+const Spot = require('../models/Spot');
+
 const resolvers = {
     Query: {
       spot: (parent, args) => {
@@ -9,15 +11,13 @@ const resolvers = {
       },
     },
     Mutation: {
-      addSpot: (parent, args) => {
-        // Logic to add a new spot
-        const { name, description } = args;
-        // Implement your data insertion logic here and return the newly added spot
-        const newSpot = { id: 'new-spot-id', name, description }; // Replace with actual data insertion
-        return newSpot;
-      },
+        addSpot: async (parent, args) => {
+          const { name, description } = args;
+          const newSpot = await Spot.create({ name, description });
+          return newSpot;
+        },
     },
-  };
-  
-  module.exports = resolvers;
+};
+
+module.exports = resolvers;
   

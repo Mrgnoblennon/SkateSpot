@@ -1,24 +1,23 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const typeDefs = require('./schemas/typeDefs'); // Import your type definitions
-const resolvers = require('./schemas/resolvers'); // Import your resolvers
+const typeDefs = require('./schemas/typeDefs');
+const resolvers = require('./schemas/resolvers');
+const connectToMongoDB = require('./config/connection'); // Import the MongoDB connection function
 
 const app = express();
 
+// Connect to MongoDB
+connectToMongoDB();
+
+// Create Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-async function startApolloServer() {
-  await server.start();
-  server.applyMiddleware({ app });
-}
+// Start the server
+const PORT = process.env.PORT || 3000;
 
-startApolloServer().then(() => {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
-
