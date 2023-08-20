@@ -1,0 +1,21 @@
+[
+    {
+      "name": "Skate Park 1",
+      "description": "Cool skate park with ramps and rails.",
+      "location": "City A",
+      "createdBy": "user1"
+    },
+    {
+      "name": "Street Spot 1",
+      "description": "Awesome spot for street skating.",
+      "location": "City B",
+      "createdBy": "user2"
+    },
+    {
+      "name": "Skate Park 2",
+      "description": "Another great skate park for tricks.",
+      "location": "City C",
+      "createdBy": "user3"
+    }
+  ]
+  

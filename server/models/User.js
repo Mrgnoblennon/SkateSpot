@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
+const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
   username: {
@@ -19,8 +19,18 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
-  spots: [{ type: Schema.Types.ObjectId, ref: 'Spot' }], // Store user's posted spots
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // Store user's comments
+  createdSpots: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Spot', // Reference to the Spot model
+    },
+  ],
+  createdComments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment', // Reference to the Comment model
+    },
+  ],
 });
 
 userSchema.pre('save', async function (next) {

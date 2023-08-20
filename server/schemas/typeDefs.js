@@ -1,6 +1,12 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+  type User {
+    id: ID!
+    username: String!
+    email: String!
+  }
+
   type Spot {
     id: ID!
     name: String!
@@ -11,21 +17,60 @@ const typeDefs = gql`
     updatedAt: String
   }
 
-  input SpotInput {
+  type Comment {
+    id: ID!
+    text: String!
+    user: User!
+    spot: Spot!
+    createdAt: String
+    updatedAt: String
+  }
+
+  type Query {
+    user(id: ID!): User
+    spot(id: ID!): Spot
+    spots: [Spot]
+    commentsBySpot(spotId: ID!): [Comment]
+  }
+
+  type Mutation {
+    createUser(input: CreateUserInput!): User
+    createSpot(input: CreateSpotInput!): Spot
+    updateSpot(input: UpdateSpotInput!): Spot
+    deleteSpot(id: ID!): Boolean
+    createComment(input: CreateCommentInput!): Comment
+    updateComment(input: UpdateCommentInput!): Comment
+    deleteComment(id: ID!): Boolean
+  }
+
+  input CreateUserInput {
+    username: String!
+    email: String!
+    password: String!
+  }
+
+  input CreateSpotInput {
     name: String!
     description: String
     location: String
   }
 
-  type Query {
-    spot(id: ID!): Spot
-    spots: [Spot]
+  input UpdateSpotInput {
+    id: ID!
+    name: String
+    description: String
+    location: String
   }
 
-  type Mutation {
-    createSpot(input: SpotInput!): Spot
-    updateSpot(id: ID!, input: SpotInput!): Spot
-    deleteSpot(id: ID!): Boolean
+  input CreateCommentInput {
+    text: String!
+    user: ID!
+    spot: ID!
+  }
+
+  input UpdateCommentInput {
+    id: ID!
+    text: String
   }
 `;
 

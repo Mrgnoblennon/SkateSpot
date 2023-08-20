@@ -1,26 +1,20 @@
 const { Schema, model } = require('mongoose');
 
-const spotSchema = new Schema({
-  name: {
+const commentSchema = new Schema({
+  text: {
     type: String,
     required: true,
-  },
-  description: {
-    type: String,
-  },
-  location: {
-    type: String,
   },
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: 'User', // Reference to the User model
+    required: true,
   },
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment', // Reference to the Comment model
-    },
-  ],
+  spot: {
+    type: Schema.Types.ObjectId,
+    ref: 'Spot', // Reference to the Spot model
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -31,6 +25,6 @@ const spotSchema = new Schema({
   },
 });
 
-const Spot = model('Spot', spotSchema);
+const Comment = model('Comment', commentSchema);
 
-module.exports = Spot;
+module.exports = Comment;
