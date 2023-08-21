@@ -1,63 +1,28 @@
-import { useMutation, gql } from '@apollo/client';
-import jwtDecode from 'jwt-decode';
+import React, { createContext, useContext, useState } from 'react';
 
-const LOGIN_MUTATION = gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      token
-      user {
-        id
-        username
-        email
-        // Other user fields
-      }
-    }
-  }
-`;
+// Create the AuthContext
+const AuthContext = createContext();
 
-const LOGOUT_MUTATION = gql`
-  mutation Logout {
-    logout
-  }
-`;
+// Create the AuthProvider component
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null); // Store user data here
 
-export const useLogin = () => {
-  const [loginMutation, { data, loading, error }] = useMutation(LOGIN_MUTATION);
-
-  const login = async (username, password) => {
-    try {
-      const response = await loginMutation({
-        variables: { username, password },
-      });
-
-      const { token, user } = response.data.login;
-      localStorage.setItem('authToken', token);
-
-      const decodedToken = jwtDecode(token);
-      const { userId } = decodedToken; // Replace with your actual payload key
-
-      return user;
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
+  const login = (userData) => {
+    setUser(userData);
   };
 
-  return { login, data, loading, error };
-};
-
-export const useLogout = () => {
-  const [logoutMutation] = useMutation(LOGOUT_MUTATION);
-
-  const logout = async () => {
-    try {
-      await logoutMutation();
-      localStorage.removeItem('authToken');
-    } catch (error) {
-      console.error('Logout error:', error);
-      throw error;
-    }
+  const logout = () => {
+    setUser(null);
   };
 
-  return { logout };
-};
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+// Create a custom hook to use the AuthContext
+export function useAuth() {
+  return useContext(AuthContext);
+}

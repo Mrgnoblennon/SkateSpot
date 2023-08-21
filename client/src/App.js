@@ -1,31 +1,29 @@
 import React from 'react';
+import { Routes, Route} from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react';
+import { AuthProvider } from './utils/auth';
 import { ApolloProvider } from '@apollo/client';
-import { ChakraProvider, CSSReset, Flex } from '@chakra-ui/react';
+import client from './utils/ApolloClient'; // Import your Apollo Client instance
 import Header from './components/Header';
-import Home from './pages/Home'; // Import the Home component
-import SignUp from './pages/SignUp';
-import client from './ApolloClient'
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
-const App = () => {
-  // Sample user data for testing
-  const user = {
-    name: 'John Doe',
-    profilePic: 'https://via.placeholder.com/150', // Placeholder image URL
-  };
-
+function App() {
   return (
-    <ApolloProvider client={client}>
     <ChakraProvider>
-      <CSSReset />
-      <Flex direction="column">
-        <Header user={user} />
-        <Flex direction="column" align="center" mt={10}>
-          <SignUp/>
-        </Flex>
-      </Flex>
+      <AuthProvider>
+        <ApolloProvider client={client}>
+        <Header />
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/signup" element={<Signup/>} />
+          </Routes>
+        </ApolloProvider>
+      </AuthProvider>
     </ChakraProvider>
-    </ApolloProvider>
   );
-};
+}
 
 export default App;
