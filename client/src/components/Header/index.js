@@ -1,4 +1,8 @@
 import React from 'react';
+import Signup from '../../pages/Signup'
+import Home from '../../pages/Home'
+import Login from '../../pages/Login'
+import { Link } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -12,9 +16,11 @@ const Header = ({ user }) => {
   return (
     <Box bg="blue.500" p={4} boxShadow="md" color="white">
       <Flex align="center">
-        <Text fontSize="xl" fontWeight="bold">
+        <Link to="/"> {Home}
+        <Button fontSize="xl" fontWeight="bold">
           SkateSpot
-        </Text>
+        </Button>
+        </Link>
         <Spacer />
         {user ? (
           <Flex align="center">
@@ -25,9 +31,18 @@ const Header = ({ user }) => {
             </Button>
           </Flex>
         ) : (
-          <Button colorScheme="green">
-            Log In
-          </Button>
+          <>
+            <Link to="/login"> {Login}
+            <Button colorScheme="green" mr={2}>
+              Log In
+            </Button>
+            </Link>
+            <Link to="/signup"> {Signup}
+            <Button colorScheme="red">
+              Sign Up
+            </Button>
+            </Link>
+          </>
         )}
       </Flex>
     </Box>
