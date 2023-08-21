@@ -1,36 +1,37 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
+import { Box, Text, Button, Flex, Spacer, Avatar } from '@chakra-ui/react';
 
-import ThoughtList from '../components/ThoughtList';
-import ThoughtForm from '../components/ThoughtForm';
-
-import { QUERY_THOUGHTS } from '../utils/queries';
-
-const Home = () => {
-  const { loading, data } = useQuery(QUERY_THOUGHTS);
-  const thoughts = data?.thoughts || [];
-
+const Home = ({ user }) => {
   return (
-    <main>
-      <div className="flex-row justify-center">
-        <div
-          className="col-12 col-md-10 mb-3 p-3"
-          style={{ border: '1px dotted #1a1a1a' }}
-        >
-          <ThoughtForm />
-        </div>
-        <div className="col-12 col-md-8 mb-3">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <ThoughtList
-              thoughts={thoughts}
-              title="Some Feed for Thought(s)..."
-            />
-          )}
-        </div>
-      </div>
-    </main>
+    <Box p={4} width="100%">
+      <Flex align="center">
+        {user ? (
+          <Flex align="center">
+            <Avatar size="lg" src={user.profilePic} alt={user.name} />
+            <Box ml={4}>
+              <Text fontSize="xl" fontWeight="bold">
+                Welcome, {user.name}!
+              </Text>
+              <Text>Explore and share your spots.</Text>
+            </Box>
+          </Flex>
+        ) : (
+          <Box>
+            <Text fontSize="xl" fontWeight="bold">
+              Welcome to SkateSpot!
+            </Text>
+            <Text>Explore and share skateboarding spots.</Text>
+            <Button colorScheme="green" mt={4}>
+              Log In
+            </Button>
+            <Button colorScheme="blue" mt={2}>
+              Sign Up
+            </Button>
+          </Box>
+        )}
+        <Spacer />
+      </Flex>
+    </Box>
   );
 };
 
