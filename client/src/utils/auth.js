@@ -1,41 +1,63 @@
-import decode from 'jwt-decode';
+import { useMutation, gql } from '@apollo/client';
+import jwtDecode from 'jwt-decode';
 
-class AuthService {
-  getProfile() {
-    return decode(this.getToken());
-  }
-
-  loggedIn() {
-    const token = this.getToken();
-    // If there is a token and it's not expired, return `true`
-    return token && !this.isTokenExpired(token) ? true : false;
-  }
-
-  isTokenExpired(token) {
-    // Decode the token to get its expiration time that was set by the server
-    const decoded = decode(token);
-    // If the expiration time is less than the current time (in seconds), the token is expired and we return `true`
-    if (decoded.exp < Date.now() / 1000) {
-      localStorage.removeItem('id_token');
-      return true;
+const LOGIN_MUTATION = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      token
+      user {
+        id
+        username
+        email
+        // Other user fields
+      }
     }
-    // If token hasn't passed its expiration time, return `false`
-    return false;
   }
+`;
 
-  getToken() {
-    return localStorage.getItem('id_token');
+const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout
   }
+`;
 
-  login(idToken) {
-    localStorage.setItem('id_token', idToken);
-    window.location.assign('/');
-  }
+export const useLogin = () => {
+  const [loginMutation, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
-  logout() {
-    localStorage.removeItem('id_token');
-    window.location.reload();
-  }
-}
+  const login = async (username, password) => {
+    try {
+      const response = await loginMutation({
+        variables: { username, password },
+      });
 
-export default new AuthService();
+      const { token, user } = response.data.login;
+      localStorage.setItem('authToken', token);
+
+      const decodedToken = jwtDecode(token);
+      const { userId } = decodedToken; // Replace with your actual payload key
+
+      return user;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
+  };
+
+  return { login, data, loading, error };
+};
+
+export const useLogout = () => {
+  const [logoutMutation] = useMutation(LOGOUT_MUTATION);
+
+  const logout = async () => {
+    try {
+      await logoutMutation();
+      localStorage.removeItem('authToken');
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
+  };
+
+  return { logout };
+};
