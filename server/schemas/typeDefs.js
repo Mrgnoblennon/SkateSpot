@@ -5,6 +5,12 @@ const typeDefs = gql`
     id: ID!
     username: String!
     email: String!
+    password: String!
+  }
+
+  type Login {
+    user: User
+    token: String
   }
 
   type Spot {
@@ -28,6 +34,7 @@ const typeDefs = gql`
 
   type Query {
     user(id: ID!): User
+    users: [User]
     spot(id: ID!): Spot
     spots: [Spot]
     commentsBySpot(spotId: ID!): [Comment]
@@ -35,6 +42,7 @@ const typeDefs = gql`
 
   type Mutation {
     createUser(input: CreateUserInput!): User
+    loginUser(username: String!, password: String!): Login
     createSpot(input: CreateSpotInput!): Spot
     updateSpot(input: UpdateSpotInput!): Spot
     deleteSpot(id: ID!): Boolean

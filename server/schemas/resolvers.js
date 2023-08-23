@@ -1,13 +1,19 @@
+require('dotenv').config()
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Spot = require('../models/Spot');
 const Comment = require('../models/Comment');
+const jwt = require('jsonwebtoken');
+const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
   Query: {
     user: async (parent, args) => {
       const { id } = args;
       return User.findById(id);
+    },
+    users: async () => {
+      return User.find(); // Retrieve all users from your data source
     },
     spot: async (parent, args) => {
       const { id } = args;
@@ -72,7 +78,30 @@ const resolvers = {
       await Comment.findByIdAndDelete(id);
       return true;
       },
-  },
+    loginUser: async (parent, { username, password }) => {
+      const user = await User.findOne({ username });
+      
+      if (!user) {
+        throw new AuthenticationError('User not found');
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        throw new AuthenticationError('Invalid password');
+      }
+
+      // Create and sign a JWT token
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: '1h', // Set the token expiration time as needed
+      });
+
+      return {
+        user,
+        token,
+      };
+    }
+  }
 };
 
 module.exports = resolvers;

@@ -42,14 +42,6 @@ function Signup() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl mt={2}>
-        <FormLabel>Password</FormLabel>
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </FormControl>
       <Button mt={4} colorScheme="teal" onClick={handleSignup}>
         Sign Up
       </Button>

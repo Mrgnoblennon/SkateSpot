@@ -1,50 +1,56 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Text,
-} from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, Button, Text } from '@chakra-ui/react';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
+import { useAuth } from '../utils/AuthContext';
 
-const Login = () => {
-  const [username, setUsername] = useState('');
+function Login() {
+  const [username, setUsername] = useState(''); // Changed to username
   const [password, setPassword] = useState('');
 
+  const { login } = useAuth();
+
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+    onCompleted: (data) => {
+      const token = data.login.token;
+      login(token);
+      console.log('Logged in successfully');
+    },
+    onError: (error) => {
+      console.error('Login failed', error);
+    },
+  });
+
   const handleLogin = () => {
-    // Implement your login logic here
-    console.log('Logging in:', username, password);
+    console.log('Username:', username);
+    console.log('Password:', password);
+    
+    loginUser({ variables: { username, password } });
   };
 
   return (
-    <Box borderWidth="1px" p={4} width="300px">
-      <Text fontSize="xl" mb={4}>
-        Login
-      </Text>
+    <Box p={4} width="300px">
       <FormControl>
-        <FormLabel>Username</FormLabel>
+        <FormLabel>Username</FormLabel> {/* Changed label to Username */}
         <Input
-          type="text"
+          type="text" // Changed to text
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your username"
         />
       </FormControl>
-      <FormControl mt={4}>
+      <FormControl mt={2}>
         <FormLabel>Password</FormLabel>
         <Input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
         />
       </FormControl>
-      <Button mt={4} colorScheme="blue" onClick={handleLogin}>
-        Login
+      <Button mt={4} colorScheme="teal" onClick={handleLogin} isLoading={loading}>
+        Log In
       </Button>
     </Box>
   );
-};
+}
 
 export default Login;
