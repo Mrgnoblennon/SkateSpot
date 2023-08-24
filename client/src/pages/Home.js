@@ -1,7 +1,42 @@
 import React from 'react';
-import { Box, Flex, Text, Avatar, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Text, Avatar, Spacer, SimpleGrid } from '@chakra-ui/react';
 import backgroundImage from '../img/skate.jpeg'; // Import your background image
 import styles from '../styles/Home.module.css'; // Import CSS module for styling
+import SpotCard from '../components/SpotCard'
+
+const spots = [
+  {
+    id: 1,
+    name: 'Spot 1',
+    description: 'Description for Spot 1',
+    imageUrl: 'example-image-1.jpg',
+    comments: [
+      { id: 1, text: 'Comment 1 for Spot 1' },
+      { id: 2, text: 'Comment 2 for Spot 1' },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Spot 1',
+    description: 'Description for Spot 1',
+    imageUrl: 'example-image-1.jpg',
+    comments: [
+      { id: 1, text: 'Comment 1 for Spot 1' },
+      { id: 2, text: 'Comment 2 for Spot 1' },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Spot 1',
+    description: 'Description for Spot 1',
+    imageUrl: 'example-image-1.jpg',
+    comments: [
+      { id: 1, text: 'Comment 1 for Spot 1' },
+      { id: 2, text: 'Comment 2 for Spot 1' },
+    ],
+  },
+  // ... Add more spots
+];
 
 const Home = ({ user }) => {
   return (
@@ -32,6 +67,11 @@ const Home = ({ user }) => {
           <Spacer />
         </Flex>
       </Box>
+      <SimpleGrid columns={3} spacing={4} mt={4}>
+        {spots.map(spot => (
+          <SpotCard key={spot.id} spot={spot} />
+        ))}
+      </SimpleGrid>
     </Box>
   );
 };
