@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, FormControl, FormLabel, Input, Button, Text } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import { useAuth } from '../utils/AuthContext';
