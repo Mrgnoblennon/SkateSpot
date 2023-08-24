@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_SPOT } from '../utils/mutations'; 
+import Auth from '../utils/auth'
 
 function Spot() {
   const [name, setName] = useState('');
@@ -12,10 +13,14 @@ function Spot() {
 
   const handleCreateSpot = async () => {
     try {
-      const { data } = await createSpot({
-        variables: {
-          input: { name, description, location },
-        },
+        const loggedInUser = Auth.getProfile();
+        const { data } = await createSpot({
+          variables: {
+            name,
+            description,
+            location,
+            createdBy: loggedInUser._Id, // Assuming the user ID is accessible this way
+          },
       });
       console.log('Spot created:', data.createSpot);
       // You can perform additional actions after spot creation
