@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
-import { CREATE_SPOT } from '../utils/mutations'; // Import your CREATE_SPOT mutation
+import { CREATE_SPOT } from '../utils/mutations'; 
 
 function Spot() {
   const [name, setName] = useState('');

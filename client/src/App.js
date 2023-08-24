@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route} from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import { AuthProvider } from './utils/AuthContext';
 import { ApolloProvider } from '@apollo/client';
 import client from './utils/ApolloClient'; // Import your Apollo Client instance
 import Header from './components/Header';
@@ -15,7 +14,6 @@ import SpotDetail from './pages/SpotDetail';
 function App() {
   return (
     <ChakraProvider>
-      <AuthProvider>
         <ApolloProvider client={client}>
         <Header />
           <Routes>
@@ -27,7 +25,6 @@ function App() {
             <Route path="./detail" element={<SpotDetail/>} />
           </Routes>
         </ApolloProvider>
-      </AuthProvider>
     </ChakraProvider>
   );
 }

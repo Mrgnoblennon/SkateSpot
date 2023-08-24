@@ -9,7 +9,7 @@ const spots = [
     id: 1,
     name: 'Spot 1',
     description: 'Description for Spot 1',
-    imageUrl: 'example-image-1.jpg',
+    imageUrl: '',
     comments: [
       { id: 1, text: 'Comment 1 for Spot 1' },
       { id: 2, text: 'Comment 2 for Spot 1' },

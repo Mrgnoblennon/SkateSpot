@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_COMMENT } from '../utils/mutations';
-import { useAuth } from '../utils/AuthContext';
+import Auth from '../utils/auth';
 
 function AddComment({ spotId }) {
   const [text, setText] = useState('');
 
-  const { user } = useAuth();
+  const { user } = Auth;
 
   const [createComment, { loading }] = useMutation(CREATE_COMMENT, {
     onCompleted: (data) => {

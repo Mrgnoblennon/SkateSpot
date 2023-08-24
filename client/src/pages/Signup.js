@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, Button, Text } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER } from '../utils/mutations';
 
@@ -7,6 +7,8 @@ function Signup() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const [createUser] = useMutation(CREATE_USER, {
     onCompleted: (data) => {
@@ -21,6 +23,13 @@ function Signup() {
   });
 
   const handleSignup = () => {
+    // Check if password and confirmPassword match before proceeding
+    if (password !== confirmPassword) {
+      setPasswordsMatch(false);
+      return;
+    }
+
+    setPasswordsMatch(true);
     createUser({ variables: { username, email, password } });
   };
 
@@ -42,6 +51,27 @@ function Signup() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
+      <FormControl mt={2}>
+        <FormLabel>Password</FormLabel>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </FormControl>
+      <FormControl mt={2}>
+        <FormLabel>Confirm Password</FormLabel>
+        <Input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </FormControl>
+      {!passwordsMatch && (
+        <Text color="red" mt={2}>
+          Passwords do not match
+        </Text>
+      )}
       <Button mt={4} colorScheme="teal" onClick={handleSignup}>
         Sign Up
       </Button>
