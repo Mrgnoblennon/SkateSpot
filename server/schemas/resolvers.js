@@ -79,28 +79,37 @@ const resolvers = {
       return true;
       },
     loginUser: async (parent, { username, password }) => {
+      console.log('Received login request for username:', username);
+    
       const user = await User.findOne({ username });
-      
+          
       if (!user) {
+        console.log('User not found:', username);
         throw new AuthenticationError('User not found');
       }
-
+    
+      console.log('User found:', user);
+    
       const isPasswordValid = await bcrypt.compare(password, user.password);
-
+    
       if (!isPasswordValid) {
+        console.log('Invalid password for user:', username);
         throw new AuthenticationError('Invalid password');
       }
-
+    
       // Create and sign a JWT token
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
         expiresIn: '1h', // Set the token expiration time as needed
       });
-
+    
+      console.log('Login successful for user:', username);
+    
       return {
         user,
         token,
       };
     }
+      
   }
 };
 

@@ -24,3 +24,27 @@ mutation Login($username: String!, $password: String!) {
   }
 }
 `;
+
+// Create Spot Mutation
+export const CREATE_SPOT = gql`
+  mutation CreateSpot($name: String!, $description: String, $location: String) {
+    createSpot(input: { name: $name, description: $description, location: $location }) {
+      id
+      name
+      description
+      location
+      createdBy
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const CREATE_COMMENT = gql`
+  mutation CreateComment($text: String!, $spotId: ID!) {
+    createComment(input: { text: $text, spotId: $spotId }) {
+      id
+      text
+    }
+  }
+`;

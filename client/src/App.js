@@ -9,6 +9,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
+import Spot from './pages/Spot';
+import SpotDetail from './pages/SpotDetail';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/profile" element={<Profile/>} />
+            <Route path="/spot" element={<Spot/>} />
+            <Route path="./detail" element={<SpotDetail/>} />
           </Routes>
         </ApolloProvider>
       </AuthProvider>
