@@ -1,5 +1,7 @@
 import decode from 'jwt-decode';
 
+
+
 class AuthService {
   getProfile() {
     const token = this.getToken();
@@ -30,8 +32,18 @@ class AuthService {
     return localStorage.getItem('id_token');
   }
 
+  // may need more fields
   login(idToken) {
     localStorage.setItem('id_token', idToken);
+    const decodedToken = decode(idToken);
+    
+    if (decodedToken) {
+      const { username, email } = decodedToken;
+      // Optionally, you can store these values in localStorage or state for easy access across the app
+      localStorage.setItem('username', username);
+      localStorage.setItem('email', email);
+    }
+    
     window.location.assign('/profile');
   }
 

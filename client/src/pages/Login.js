@@ -22,10 +22,13 @@ function Login() {
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onCompleted: (data) => {
-      console.log(data);
       const token = data.loginUser.token;
+      const username = data.loginUser.username; // Check the field name in your schema
+      const email = data.loginUser.email; // Check the field name in your schema
       login(token);
       console.log('Logged in successfully');
+      console.log('Username:', username);
+      console.log('Email:', email);
     },
     onError: (error) => {
       console.error('Login failed', error);

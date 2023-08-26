@@ -6,7 +6,6 @@ const Profile = () => {
 
   if (isLoggedIn) {
     const user = AuthService.getProfile();
-    console.log('Decoded User Profile:', user);
     return (
       <div>
         <h1>User Profile</h1>

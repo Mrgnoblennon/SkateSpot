@@ -98,9 +98,14 @@ const resolvers = {
       }
     
       // Create and sign a JWT token
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: '1h', // Set the token expiration time as needed
-      });
+const token = jwt.sign(
+  { _Id: user.id, email: user.email, username: user.username },
+  process.env.JWT_SECRET_KEY,
+  {
+    expiresIn: '1h', // Set the token expiration time as needed
+  }
+);
+
     
       console.log('Login successful for user:', username);
     

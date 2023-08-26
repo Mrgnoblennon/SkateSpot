@@ -5,7 +5,7 @@ const expiration = '1h'; // Adjust expiration as needed
 
 module.exports = {
   authMiddleware: function (req, res, next) {
-    console.log('authMiddleware called')
+    console.log('authMiddleware called');
     let token = req.body.token || req.query.token || req.headers.authorization;
 
     if (req.headers.authorization) {
@@ -17,6 +17,7 @@ module.exports = {
     }
 
     try {
+      // Verify the token and access the 'data' object within the payload
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
       next();
@@ -26,7 +27,7 @@ module.exports = {
     }
   },
   signToken: function ({ email, username, _id }) {
-    const payload = { email, username, _id };
+    const payload = { email, username, _id }; // Include email and username in the payload
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };

@@ -7,12 +7,17 @@ import {
   Text,
   Button,
   Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react';
-import AuthService from '../../utils/auth'; // Replace with the correct path to AuthService
+import Auth from '../../utils/auth'; // Replace with the correct path to AuthService
 
 const Header = ({ user }) => {
+  console.log("User:", user); // undefined
   const handleSignOut = () => {
-    AuthService.logout(); // Call the logout method from your auth service
+    Auth.logout(); // Call the logout method from your auth service
     // You can also perform any additional actions after signing out
   };
 
@@ -27,8 +32,8 @@ const Header = ({ user }) => {
         <Spacer />
         {user ? (
           <Flex align="center">
-            <Avatar size="sm" src={user.profilePic} alt={user.name} />
-            <Text ml={2}>{user.name}</Text>
+            <Avatar size="sm" src={user.profilePic} alt={user.username} />
+            <Text ml={2}>{user.username}</Text>
             <Button colorScheme="red" ml={4} onClick={handleSignOut}>
               Log Out
             </Button>
@@ -40,13 +45,28 @@ const Header = ({ user }) => {
                 Log In
               </Button>
             </Link>
-            <Link to="/signup">
-              <Button colorScheme="red">
-                Sign Up
-              </Button>
-            </Link>
           </>
         )}
+        <Menu>
+          <MenuButton as={Button} ml={4}>
+            Actions
+          </MenuButton>
+          <MenuList>
+            {/* will need further implementation*/}
+            <MenuItem color="blue.500">About Us</MenuItem>
+            <MenuItem color="blue.500">Contact Us</MenuItem>
+
+            {user && (
+              <>
+                <MenuItem color="blue.500">Edit Profile</MenuItem>
+                <MenuItem color="blue.500">Settings</MenuItem>
+                <MenuItem onClick={handleSignOut} color="red.500">
+                  Log Out
+                </MenuItem>
+              </>
+            )}
+          </MenuList>
+        </Menu>
       </Flex>
     </Box>
   );
