@@ -11,9 +11,12 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Image
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import Auth from '../../utils/auth'; // Replace with the correct path to AuthService
+import customIcon from '../../assets/icons/SkateSpot.svg';
+
 
 const Header = ({ user }) => {
   console.log("User:", user); // undefined
@@ -26,9 +29,7 @@ const Header = ({ user }) => {
     <Box bg="blue.500" p={4} boxShadow="md" color="white">
       <Flex align="center">
         <Link to="/">
-          <Button fontSize="xl" fontWeight="bold">
-            SkateSpot
-          </Button>
+          <Image src={customIcon} alt="SkateSpot" />
         </Link>
         <Spacer />
         {user ? (
