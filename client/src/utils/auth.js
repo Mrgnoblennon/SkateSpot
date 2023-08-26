@@ -44,7 +44,7 @@ class AuthService {
       localStorage.setItem('email', email);
     }
     
-    window.location.assign('/profile');
+    window.location.assign('/');
   }
 
   logout() {

@@ -12,6 +12,7 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import Auth from '../../utils/auth'; // Replace with the correct path to AuthService
 
 const Header = ({ user }) => {
@@ -32,11 +33,11 @@ const Header = ({ user }) => {
         <Spacer />
         {user ? (
           <Flex align="center">
-            <Avatar size="sm" src={user.profilePic} alt={user.username} />
-            <Text ml={2}>{user.username}</Text>
-            <Button colorScheme="red" ml={4} onClick={handleSignOut}>
-              Log Out
-            </Button>
+            <Link to="/profile">
+              <Avatar size="md" src={user.profilePic} alt={user.username} />
+            </Link>
+            <Text ml={2}>Welcome! {user.username}</Text>
+            
           </Flex>
         ) : (
           <>
@@ -48,8 +49,8 @@ const Header = ({ user }) => {
           </>
         )}
         <Menu>
-          <MenuButton as={Button} ml={4}>
-            Actions
+          <MenuButton as={Button} ml={4} >
+            <HamburgerIcon boxSize={5} /> {/* Adjust boxSize as needed */}
           </MenuButton>
           <MenuList>
             {/* will need further implementation*/}
